@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import WorkoutDetails from '../components/WorkoutDetails'
+import WorkoutForm from '../components/WorkoutForm'
 
 interface Workout {
     _id: string,
@@ -29,12 +30,13 @@ function Home() {
 
 
   return (
-    <div className='bg-[#f1f1f1] h-screen grid grid-cols-[3fr_1fr] gap-24'>
+    <div className='grid grid-cols-[3fr_1fr] gap-24'>
         <div>
             {workouts && workouts.map((workout) => (
                 <WorkoutDetails key={workout._id} workout={workout} />
             ))}
         </div>
+        <WorkoutForm />
     </div>
   )
 }

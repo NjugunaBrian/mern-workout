@@ -9,7 +9,7 @@ function App() {
     <div>
       <BrowserRouter>
         <Navbar />
-        <div className='max-w-3xl p-5 my-0 mx-auto'>
+        <div className='max-w-4xl p-5 my-0 mx-auto'>
           <Routes>
             <Route path='/' element={<Home />} />
           </Routes>
