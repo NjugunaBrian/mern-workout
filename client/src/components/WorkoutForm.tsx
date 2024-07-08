@@ -9,6 +9,7 @@ function WorkoutForm() {
     const [load, setLoad] = useState('');
     const [reps, setReps] = useState('');
     const [error, setError] = useState(null);
+    const [emptyFields, setEmptyFields] = useState<String[]>([]);
 
     const handleSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -27,6 +28,7 @@ function WorkoutForm() {
 
         if(!response.ok){
             setError(json.error);
+            setEmptyFields(json.emptyFields);
         }
 
         if(response.ok){
@@ -34,6 +36,7 @@ function WorkoutForm() {
             setLoad('')
             setReps('')
             setError(null)
+            setEmptyFields([])
             console.log('New workout added', json);
             dispatch({ type: 'ADD_WORKOUT', payload: json})
         }
@@ -45,16 +48,16 @@ function WorkoutForm() {
         <h3 className='text-2xl'>Add a Workout</h3>
 
         <label className='block'>Exercise Title: </label>
-        <input className='outline outline-none block p-2 mt-2 mb-5 w-full rounded box-border' type='text' onChange={(e) => setTitle(e.target.value)} value={title}/>
+        <input className={`outline outline-none block p-2 mt-2 mb-5 w-full rounded box-border ${emptyFields.includes('title')} ? 'border border-[#e7195a]' : 'border'`} type='text' onChange={(e) => setTitle(e.target.value)} value={title}/>
 
         <label className='block'>Load (in kg): </label>
-        <input className='outline outline-none block p-2 mt-2 mb-5 w-full rounded box-border' type='number' onChange={(e) => setLoad(e.target.value)} value={load}/>
+        <input className={`outline outline-none block p-2 mt-2 mb-5 w-full rounded box-border ${emptyFields.includes('load')} ? 'border border-[#e7195a]' : 'border'`} type='number' onChange={(e) => setLoad(e.target.value)} value={load}/>
 
         <label className='block'>Reps (in kg): </label>
-        <input className='outline outline-none block p-2 mt-2 mb-5 w-full rounded box-border' type='number' onChange={(e) => setReps(e.target.value)} value={reps}/>
+        <input className={`outline outline-none block p-2 mt-2 mb-5 w-full rounded box-border ${emptyFields.includes('reps')} ? 'border border-[#e7195a]' : 'border'`}type='number' onChange={(e) => setReps(e.target.value)} value={reps}/>
 
         <button type='submit' className='bg-[#1aac83] rounded cursor-pointer text-white py-3 px-2'>Add Workout</button>
-        {error && <div className='p-2 my-5 bg-black border border-pink-100 text-pink-100'>{error}</div>}
+        {error && <div className='p-2 my-5 border-[#e7195a] text-pink-100'>{error}</div>}
 
     </form>
   )
