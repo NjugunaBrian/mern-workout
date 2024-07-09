@@ -1,5 +1,7 @@
 import React from "react";
 import { useWorkoutsContext } from "../hooks/useWorkoutContext";
+import { formatDistanceToNow } from "date-fns";
+import { TrashIcon } from "@heroicons/react/24/solid";
 
 interface WorkoutProps {
     createdAt?: string | Date;
@@ -30,9 +32,11 @@ function WorkoutDetails({ workout }: { workout: WorkoutProps}): JSX.Element{
             <h4 className="text-xl mb-2 text-[#1aac83]">{workout.title}</h4>
             <p className="text-sm text-[#555]"><strong>Load (kg): </strong>{workout.load}</p>
             <p className="text-sm text-[#555]"><strong>Reps (kg): </strong>{workout.reps}</p>
-            {workout.createdAt && <p>{workout.createdAt.toString()}</p>}
+            {workout.createdAt && <p>{formatDistanceToNow(new Date(workout.createdAt.toString()), { addSuffix: true})}</p>}
             </div>
-            <button onClick={handleDelete} className="flex items-center justify-center rounded-full my-14 mx-5 px-3 py-1 text-sm bg-[#f1f1f1] hover:my-12">Delete</button>
+            <button onClick={handleDelete} className="flex items-center justify-center rounded-full my-14 mx-5 px-3 py-1 text-sm bg-[#f1f1f1] hover:my-12">
+                <TrashIcon className="h-5 w-5" />
+            </button>
 
         
 
