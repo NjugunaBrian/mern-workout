@@ -1,7 +1,8 @@
 import express, { Request, Response } from "express";
 import dotenv from "dotenv";
-import router from './routes/workouts';
+import workoutRoutes from './routes/workouts';
 import mongoose from 'mongoose';
+import userRoutes from './routes/users';
 
 dotenv.config();
 
@@ -20,7 +21,10 @@ app.use((req, res, next) => {
 app.get('/', (req: Request, res: Response) => {
     res.send("Hello World!");
 });
-app.use('/api/workouts', router)
+app.use('/api/workouts', workoutRoutes)
+app.use('/api/users', userRoutes)
+
+
 
 //connect to db
 mongoose.connect(process.env.MONGO_URI!)
