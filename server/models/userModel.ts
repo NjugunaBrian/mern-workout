@@ -12,6 +12,10 @@ interface userModel extends Model<IUser>{
     signup( email: string, password: string): Promise<IUser>
 }
 
+interface userModel extends Model<IUser>{
+    login( email: string, password: string): Promise<IUser>
+}
+
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
@@ -51,6 +55,30 @@ userSchema.statics.signup = async function (email:string, password:string): Prom
 
     const user = await (this as any).create({ email, password: hashedPassword});
     return user
+}
+
+userSchema.statics.login = async function (email: string, password: string) : Promise<IUser>{
+ 
+    
+    if(!email || !password){
+        throw Error("All fields must be filled.")
+    }
+
+    const user = await (this as any).findOne({ email })
+
+    if (!user){
+        throw Error('Invalid credentials');
+    }
+
+    const match = await bcrypt.compare(password, user.password)
+
+    if (!match){
+        throw Error('Invalid credentials');
+    }
+
+    return user
+
+
 }
 
 const UserModel = mongoose.model<IUser, userModel>("UserModel", userSchema);
