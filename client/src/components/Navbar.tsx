@@ -8,6 +8,12 @@ function Navbar() {
             <Link to="/" className='text-gray-700 no-underline'>
                 <h1 className='text-2xl font-bold'>WorkOut Buddy</h1>
             </Link>
+            <nav className='flex items-center'>
+              <div>
+                <Link to="/signup" className='ml-2'>Sign Up</Link>
+                <Link to="/login" className='ml-2'>Login</Link>
+              </div>
+            </nav>
         </div>
     </header>
   )
