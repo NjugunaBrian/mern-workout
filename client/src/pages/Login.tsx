@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import useLogin from '../hooks/useLogin';
 
 
 
@@ -6,10 +7,12 @@ function Login() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const { login, loading, error } = useLogin();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        await login(email, password);
         
     }
 
@@ -19,7 +22,9 @@ function Login() {
             <form onSubmit={handleSubmit} className='flex flex-col gap-3'>
                 <input type='email' onChange={(e) => setEmail(e.target.value)} placeholder='Email' value={email} className='outline outline-[1px] outline-[#9e9e9e] p-3 rounded-lg' id='email' />
                 <input type='password'  onChange={(e) => setPassword(e.target.value)} placeholder='Password' value={password} className='outline outline-[1px] outline-[#9e9e9e] p-3 rounded-lg' id='password' />
-                <button className='p-3  rounded-lg bg-[#1aac83]'>Log in</button>
+                <button disabled={loading} className='p-3  rounded-lg bg-[#1aac83]'>Log in</button>
+
+                {error && <div className='p-2 my-5 border-[#e7195a] text-[#e7195a] rounded bg-[#ffefef]'>{error}</div>}
             </form>
         </div>
     )
