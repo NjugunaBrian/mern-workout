@@ -1,7 +1,7 @@
-import React, { createContext, useReducer } from "react";
+import React, { createContext, useEffect, useReducer } from "react";
 
 export interface AuthContextType {
-    users: User[],
+    user: User | null,
     dispatch: React.Dispatch<any>
 
 }
@@ -13,17 +13,18 @@ interface User {
 }
 
 type Action = 
-| { type: 'LOGIN'; payload: User[]}
+| { type: 'LOGIN'; payload: User}
 | { type: 'LOGOUT'; payload: string}
 
 export const AuthContext = createContext<AuthContextType | undefined >(undefined);
 
-export const authReducer = (state: User[], action: Action): User[] | null | any => {
+
+export const authReducer = (state: User, action: Action): User | null | any => {
     switch (action.type){
         case 'LOGIN':
-            return action.payload;
+            return { user: action.payload};
         case 'LOGOUT':
-            return null;
+            return { user: null };
         default:
             return state       
     }
@@ -32,10 +33,22 @@ export const authReducer = (state: User[], action: Action): User[] | null | any 
 
 export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
-    const [users, dispatch] = useReducer(authReducer, { user: null });
+    const [state, dispatch] = useReducer(authReducer, { user: null });
+
+    useEffect(() => {
+        const storedUser = localStorage.getItem('user')
+        if(storedUser){
+            const user = JSON.parse(storedUser);
+            if (user) {
+                dispatch({ type: 'LOGIN', payload: user });
+            }          
+        }
+    }, [])
+
+    console.log(state);
 
     return (
-        <AuthContext.Provider value={{ ...users, dispatch}}>
+        <AuthContext.Provider value={{ ...state, dispatch}}>
             {children}
         </AuthContext.Provider>
     )
