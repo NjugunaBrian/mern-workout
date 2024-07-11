@@ -2,8 +2,8 @@ import mongoose, { Model } from 'mongoose';
 import bcrypt from 'bcrypt';
 import validator from "validator";
 
-interface IUser extends Document{
-    _id: any;
+export interface IUser extends Document{
+    _id: any | string;
     email: string,
     password: string,
 }

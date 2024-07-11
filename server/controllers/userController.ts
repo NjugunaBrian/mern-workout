@@ -2,7 +2,7 @@ import { Response, Request, NextFunction } from "express";
 import UserModel from '../models/userModel';
 import jwt from "jsonwebtoken";
 
-const createToken = (_id: any) => {
+const createToken = (_id: any | string) => {
     return jwt.sign({ _id }, process.env.SECRET!, { expiresIn: '3d'})
 }
 
