@@ -8,16 +8,14 @@ import Login from './pages/Login';
 
 function App() {
   return (
-    <div>
+    <div className='min-h-screen bg-[#f1f1f1]'>
       <BrowserRouter>
         <Navbar />
-        <div className='max-w-4xl my-0 mx-auto'>
+        <div className='max-w-4xl mx-auto my-0'>
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/signup' element={<Signup />} />
             <Route path='/login' element={<Login />} />
-
-
           </Routes>
         </div>
       </BrowserRouter>
