@@ -1,12 +1,22 @@
-import { Response, Request, NextFunction } from 'express';
+import { Response, NextFunction, Request } from 'express';
 import Workout from '../models/workoutModel';
 import mongoose from 'mongoose';
 
+interface UserRequest extends Request {
+    user: any;
+    _id: string;
+};
+
 //get all workouts
 export const getWorkouts = async(req: Request, res: Response, next: NextFunction) => {
-    const workouts =  await Workout.find({}).sort({createdAt: -1});
+    const getTheWorkouts = async(req: UserRequest, res: Response, next: NextFunction) => {
 
-    res.status(200).json(workouts);
+        const user_id = req.user._id;
+        const workouts =  await Workout.find({ user_id }).sort({createdAt: -1});
+
+        res.status(200).json(workouts);
+    }
+    return getTheWorkouts(req as UserRequest, res, next);    
 }
 //get a single workout
 
@@ -27,30 +37,36 @@ export const getWorkout = async(req: Request, res: Response, next: NextFunction)
 
 //create a workout
 export const createWorkout = async(req: Request, res: Response, next: NextFunction) => {
-    const { title, reps, load } = req.body
+    const workoutCreate = async(req: UserRequest, res: Response, next: NextFunction) => {
 
-    let emptyFields = [];
+        const { title, reps, load } = req.body
 
-    if(!title){
-        emptyFields.push('title');
-    }
-    if (!reps){
-        emptyFields.push('reps')
-    }
-    if (!load){
-        emptyFields.push('load')
-    }
-    if(emptyFields.length > 0){
-        return res.status(400).json({ error: 'Please fill in all the fields', emptyFields})
-    }
+        let emptyFields = [];
 
-    try {
-        const workout = await Workout.create({ title, reps, load });
-        res.status(200).json(workout);
+        if(!title){
+            emptyFields.push('title');
+        }
+        if (!reps){
+            emptyFields.push('reps')
+        }
+        if (!load){
+            emptyFields.push('load')
+        }
+        if(emptyFields.length > 0){
+            return res.status(400).json({ error: 'Please fill in all the fields', emptyFields})
+        }
 
-    } catch(error : any) {
-        res.status(400).json({ error: error.message})
+        try {
+            const user_id = req.user._id;
+            const workout = await Workout.create({ title, reps, load, user_id });
+            res.status(200).json(workout);
+
+        } catch(error : any) {
+            res.status(400).json({ error: error.message})
+        }
     }
+    return workoutCreate(req as UserRequest, res, next);
+    
 };
 
 //delete a workout
