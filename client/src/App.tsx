@@ -8,7 +8,7 @@ import Login from './pages/Login';
 
 function App() {
   return (
-    <div className='min-h-screen bg-[#f1f1f1]'>
+    <div className='min-h-screen bg-[#CDCDCD]'>
       <BrowserRouter>
         <Navbar />
         <div className='max-w-4xl mx-auto my-0'>

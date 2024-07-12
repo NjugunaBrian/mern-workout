@@ -7,6 +7,7 @@ export interface AuthContextType {
 }
 
 interface User {
+    token: any;
     _id: string,
     email: string,
     password: string

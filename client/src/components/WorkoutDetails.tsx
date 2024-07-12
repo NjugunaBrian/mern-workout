@@ -2,6 +2,7 @@ import React from "react";
 import { useWorkoutsContext } from "../hooks/useWorkoutContext";
 import { formatDistanceToNow } from "date-fns";
 import { TrashIcon } from "@heroicons/react/24/solid";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 interface WorkoutProps {
     createdAt?: string | Date;
@@ -14,10 +15,18 @@ interface WorkoutProps {
 function WorkoutDetails({ workout }: { workout: WorkoutProps}): JSX.Element{
 
     const { dispatch } = useWorkoutsContext();
+    const { user } = useAuthContext();
 
-    const handleDelete = async() => {
+    const handleDelete = async () => {
+
+        if (!user){
+            return
+        }
         const response = await fetch('/api/workouts/' + workout._id, {
             method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${user?.token}`,
+            }
         });
         const json = await response.json()
 

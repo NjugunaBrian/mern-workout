@@ -13,13 +13,29 @@ interface AuthenticatedRequest extends Request{
 const requireAuth =  (req: Request, res: Response, next: NextFunction) => {
     const authMiddleware = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
         //verify authorization
-        const { authorization } = req.headers
+        const authorization  = req.headers.authorization
 
         if (!authorization){
             res.status(401).json({ error: 'Authorization token required' })
+            return
         }
-        const token = authorization!.split(" ")[1];
 
+        let token: string;
+        
+        try {
+            const parts = authorization!.split(' ');
+      
+            if (parts.length !== 2 || parts[0] !== 'Bearer') {
+              res.status(401).json({ error: 'Authorization header format must be "Bearer <token>"' });
+              return
+            }
+      
+            token = parts[1];
+          } catch (error) {
+            res.status(401).json({ error: 'Invalid authorization header' });
+            return
+          }
+      
         try{
             const { _id } = jwt.verify(token, process.env.SECRET!) as CustomJwtPayload
 
