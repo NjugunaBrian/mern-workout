@@ -21,7 +21,7 @@ function Navbar() {
           {user && (
             <div>
               <span>{user.email}</span>
-              <button onClick={handleClick} className='py-1 px-2 rounded-xl text-base cursor-pointer text-[#1aac83] bg-white border-[2px] border-[#1aac83]'>Log Out</button>
+              <button onClick={handleClick} className='py-1 px-2 ml-2 rounded-xl text-base cursor-pointer text-[#1aac83] bg-white border-[2px] border-[#1aac83]'>Log Out</button>
             </div>
           )}
           {! user && (
