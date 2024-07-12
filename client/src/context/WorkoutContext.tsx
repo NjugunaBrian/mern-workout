@@ -29,7 +29,7 @@ export type Action =
     | { type: 'SET_WORKOUTS'; payload: Workout[]}
     | { type: 'ADD_WORKOUT'; payload: Workout }
     | { type: 'UPDATE_WORKOUT'; payload: Workout }
-    | { type: 'DELETE_WORKOUT'; payload: string };
+    | { type: 'DELETE_WORKOUT'; payload: Workout};
 
 //Reducer function to manage the state changes
 const workoutsReducer = (state: Workout[], action: Action): Workout[] => {
@@ -43,7 +43,7 @@ const workoutsReducer = (state: Workout[], action: Action): Workout[] => {
                 workout._id === action.payload._id ? action.payload : workout
             );
         case 'DELETE_WORKOUT':
-            return state.filter(workout => workout._id !== action.payload);
+            return state.filter(workout => workout._id !== action.payload._id);
         default:
             return state;           
     }
